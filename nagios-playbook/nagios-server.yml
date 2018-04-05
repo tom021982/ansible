@@ -4,14 +4,9 @@
   
   tasks:
   
-  - name: Copy Nagios binaries to {{ansible_hostname}}
-    local_action: command scp /root/myAnsible/nagios-play/xi-5.4.11.tar.gz root@{{item}}:/tmp/
-    with_items:
-      - "{{ groups['nagiosserver'] }}"
-
-  - name: Extract xi-5.4.11.tar.gz to remote host /tmp directory.
+  - name: Download and extract xi-5.4.11.tar.gz from github to remote host /tmp directory.
     unarchive:
-      src: /tmp/xi-5.4.11.tar.gz
+      src: https://github.com/tomsana/ansible/blob/master/nagios-playbook/xi-5.4.11.tar.gz
       dest: /tmp/
       remote_src: yes
  
@@ -22,4 +17,12 @@
 
   - name: Create nagiosadmin user password
     shell: htpasswd -cb /usr/local/nagiosxi/etc/htpasswd.users nagiosadmin nagios
+
+
+
+
+#  - name: Copy Nagios binaries to {{ansible_hostname}}
+#    local_action: command scp /root/myAnsible/nagios-play/xi-5.4.11.tar.gz root@{{item}}:/tmp/
+#    with_items:
+#      - "{{ groups['nagiosserver'] }}"
 
