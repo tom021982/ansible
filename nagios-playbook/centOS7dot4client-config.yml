@@ -1,0 +1,41 @@
+---
+  - name: This playbook configures nagios client(s) for CentOS nodes.
+    hosts: nodes
+    
+    vars:
+      nagios_server: 192.168.56.11
+
+    tasks:
+      - name: Copy CentOS package from nagios server to {{ansible_hostname}}
+        local_action: command scp /root/myAnsible/nagios-play/linux-nrpe-agent.tar.gz root@{{inventory_hostname}}:/tmp/
+        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+      - name: Extract linux-nrpe-agent.tar.gz to /tmp directory
+        unarchive:
+          src: /tmp/linux-nrpe-agent.tar.gz
+          dest: /tmp/
+          remote_src: yes
+        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+      - name: Run script fullinstall
+        shell: |
+          ./fullinstall -n
+          
+          expect "Allow from:"
+          send "\n"
+          
+          exit 0
+
+        args:
+          chdir: /tmp/linux-nrpe-agent/
+        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+      - name: Add nagios server IP in client machine
+        template:
+          src: /root/myAnsible/nagios-play/serverIP.j2
+          dest: /etc/xinetd.d/nrpe
+        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      
+      - name: start and enable xinetd service
+        service: name=xinetd state=restarted enabled=yes
+        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

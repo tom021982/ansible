@@ -1,0 +1,31 @@
+---
+- name: Integrate nagios clients with server
+  hosts: nagiosserver
+
+  vars:
+    host: "{{ item }}"
+    with_items:
+      - "{{ groups['nodes'] }}"
+
+  tasks:
+
+  - name: Copy nagios-cfg.j2 template to import directory
+    template:
+      src: nagios-cfg.j2
+      dest: /usr/local/nagios/etc/import/{{ item }}.cfg
+      owner: nagios
+      group: nagios
+      mode: 755
+    with_items:
+      - "{{ groups['nodes'] }}"
+
+  - name: Reconfigure nagios for client integration
+    command: /usr/local/nagiosxi/scripts/reconfigure_nagios.sh
+    args:
+      chdir: /usr/local/nagiosxi/scripts/
+
+  - name: Restart nagios on server to use new configuration
+    service:
+      name: nagios
+      state: restarted
+

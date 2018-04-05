@@ -1,0 +1,25 @@
+---
+- name: Playbook for configuring nagios server
+  hosts: nagiosserver
+  
+  tasks:
+  
+  - name: Copy Nagios binaries to {{ansible_hostname}}
+    local_action: command scp /root/myAnsible/nagios-play/xi-5.4.11.tar.gz root@{{item}}:/tmp/
+    with_items:
+      - "{{ groups['nagiosserver'] }}"
+
+  - name: Extract xi-5.4.11.tar.gz to remote host /tmp directory.
+    unarchive:
+      src: /tmp/xi-5.4.11.tar.gz
+      dest: /tmp/
+      remote_src: yes
+ 
+  - name: Run script fullinstall
+    command: ./fullinstall -n
+    args:
+      chdir: /tmp/nagiosxi
+
+  - name: Create nagiosadmin user password
+    shell: htpasswd -cb /usr/local/nagiosxi/etc/htpasswd.users nagiosadmin nagios
+

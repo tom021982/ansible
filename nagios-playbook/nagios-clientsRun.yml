@@ -1,0 +1,69 @@
+---
+  - name: This playbook will find the nodes and configure them accordingly to their respective Operating System.
+    hosts: nodes
+
+    tasks:
+
+    - stat: path=/etc/xinetd.d/nrpe
+      register: nrpe_file
+  
+    - name: Installing nagios agent on CentOS systems....
+      local_action: command ansible-playbook centOS7dot4client-config.yml
+      when: 
+        - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+        - nrpe_file.stat.exists == False
+
+
+
+    - stat: path=/etc/nrpe.cfg
+      register: nrpe_cfg
+
+    - name: Installing nagios agent on SuSE systems .....
+      local_action: command ansible-playbook suse12client-config.yml
+      when: 
+        - ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
+        - nrpe_cfg.stat.exists == False
+
+
+
+#    tasks:
+#    - name: I am a CentOS or RHEL runbook.
+#      local_action: command ansible-playbook centOS7dot4client-config.yml
+#      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+#      run_once: true
+#
+#    - name: I am a SuSE or SLES runbook.
+#      local_action: command ansible-playbook suse12client-config.yml
+#      when: ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
+#      run_once: true
+
+
+
+
+
+#    tasks:
+#
+#      - stat: path=/etc/xinetd.d/nrpe
+#        register: file_exists_1
+#    
+#      - debug: var=file_exists_1
+#
+#      – name: Running CentOS/RHEL client configuration playbook.........
+#        local_action: command ansible-playbook centOS7dot4client-config.yml
+#        when: 
+#          - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+#          - not file_exists_1.stat.exists
+#
+#
+#      - stat: path=/etc/nrpe.cfg
+#        register: file_exists_2
+#
+#      - debug: var=file_exists_2
+#
+#      - name: Running SLES/SUSE client configuration playbook.........
+#        local_action: command ansible-playbook suse12client-config.yml
+#        when:
+#          - ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
+#          - not file_exists_2.stat.exists
+
+
