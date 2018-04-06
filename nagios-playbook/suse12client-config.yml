@@ -6,14 +6,10 @@
       nagios_server: 192.168.56.11
 
     tasks:
-      - name: Copy SUSE packages from nagios server to {{ansible_hostname}}
-        local_action: command scp /root/myAnsible/nagios-play/NRPE-3.2.1-NewBuild.tar.gz root@{{inventory_hostname}}:/tmp/
-        when: ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
-
 
       - name: Extract SuSE binaries to /tmp directory of SuSE client machines.
         unarchive:
-          src: /tmp/NRPE-3.2.1-NewBuild.tar.gz
+          src: https://github.com/tomsana/ansible/blob/master/nagios-playbook/NRPE-3.2.1-NewBuild.tar.gz?raw=true
           dest: /tmp/
           remote_src: yes
         when: ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
@@ -67,9 +63,15 @@
         service: name=nrpe state=started enabled=yes
         when: ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
 
+
+
+#      - name: Copy SUSE packages from nagios server to {{ansible_hostname}}
+#        local_action: command scp /root/myAnsible/nagios-play/NRPE-3.2.1-NewBuild.tar.gz root@{{inventory_hostname}}:/tmp/
+#        when: ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
+
+
 #  - include: nagios-client.yml
 #    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-
 
 
 #https://stackoverflow.com/questions/21892603/how-to-make-ansible-execute-a-shell-script-if-a-package-is-not-installed

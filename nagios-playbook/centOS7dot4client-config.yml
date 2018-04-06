@@ -6,13 +6,10 @@
       nagios_server: 192.168.56.11
 
     tasks:
-      - name: Copy CentOS package from nagios server to {{ansible_hostname}}
-        local_action: command scp /root/myAnsible/nagios-play/linux-nrpe-agent.tar.gz root@{{inventory_hostname}}:/tmp/
-        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
       - name: Extract linux-nrpe-agent.tar.gz to /tmp directory
         unarchive:
-          src: /tmp/linux-nrpe-agent.tar.gz
+          src: https://github.com/tomsana/ansible/blob/master/nagios-playbook/linux-nrpe-agent.tar.gz?raw=true
           dest: /tmp/
           remote_src: yes
         when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
@@ -39,3 +36,11 @@
       - name: start and enable xinetd service
         service: name=xinetd state=restarted enabled=yes
         when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+
+
+
+#      - name: Copy CentOS package from nagios server to {{ansible_hostname}}
+#        local_action: command scp /root/myAnsible/nagios-play/linux-nrpe-agent.tar.gz root@{{inventory_hostname}}:/tmp/
+#        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+

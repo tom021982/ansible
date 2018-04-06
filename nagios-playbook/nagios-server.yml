@@ -6,7 +6,7 @@
   
   - name: Download and extract xi-5.4.11.tar.gz from github to remote host /tmp directory.
     unarchive:
-      src: https://github.com/tomsana/ansible/blob/master/nagios-playbook/xi-5.4.11.tar.gz
+      src: https://github.com/tomsana/ansible/blob/master/nagios-playbook/xi-5.4.11.tar.gz?raw=true
       dest: /tmp/
       remote_src: yes
  

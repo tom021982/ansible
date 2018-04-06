@@ -1,5 +1,5 @@
 ---
-  - name: This playbook will find the nodes and configure them accordingly to their respective Operating System.
+  - name: This playbook will find the nodes and configure them accordingly to their respective OS.
     hosts: nodes
 
     tasks:
