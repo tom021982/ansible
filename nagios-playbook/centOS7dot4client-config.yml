@@ -29,10 +29,10 @@
 
 
       - name: Download template file from github and add nagios server IP in client machine.
-      get_url:
-        url: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/serverIP.j2
-        dest: /etc/xinetd.d/nrpe
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+        get_url:
+          url: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/serverIP.j2
+          dest: /etc/xinetd.d/nrpe
+        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 
       - name: start and enable xinetd service
