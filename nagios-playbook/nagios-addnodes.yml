@@ -9,9 +9,9 @@
 
   tasks:
 
-  - name: Copy nagios-cfg.j2 template to import directory
-    template:
-      src: nagios-cfg.j2
+  - name: Download nagios-cfg.j2 template from github to import directory in the nagios server.
+    get_url:
+      url: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/nagios-cfg.j2
       dest: /usr/local/nagios/etc/import/{{ item }}.cfg
       owner: nagios
       group: nagios

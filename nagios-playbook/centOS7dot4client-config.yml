@@ -27,12 +27,14 @@
           chdir: /tmp/linux-nrpe-agent/
         when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-      - name: Add nagios server IP in client machine
-        template:
-          src: /root/myAnsible/nagios-play/serverIP.j2
-          dest: /etc/xinetd.d/nrpe
-        when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-      
+
+      - name: Download template file from github and add nagios server IP in client machine.
+      get_url:
+        url: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/serverIP.j2
+        dest: /etc/xinetd.d/nrpe
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+
       - name: start and enable xinetd service
         service: name=xinetd state=restarted enabled=yes
         when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

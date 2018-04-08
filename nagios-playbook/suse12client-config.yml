@@ -43,9 +43,9 @@
         when: ansible_distribution == 'SuSE' or ansible_distribution == 'SLES' 
 
 
-      - name: Add nagios server IP in client machine
-        template:
-          src: /root/myAnsible/nagios-play/nrpe-cfg.j2
+      - name: Download template file from github and add nagios server IP on all suse clients.
+        get_url:
+          url: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/nrpe-cfg.j2
           dest: /etc/nrpe.cfg
         when: ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
 
