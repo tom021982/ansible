@@ -4,25 +4,25 @@
 
     tasks:
 
-    - stat: path=/etc/xinetd.d/nrpe
-      register: nrpe_file
+      - stat: path=/etc/xinetd.d/nrpe
+        register: nrpe_file
   
-    - name: Installing nagios agent on CentOS systems....
-      import_playbook: centOS7dot4client-config.yml
-      when: 
-        - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-        - nrpe_file.stat.exists == False
+      - name: Installing nagios agent on CentOS systems....
+        import_playbook: centOS7dot4client-config.yml
+        when: 
+          - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+          - nrpe_file.stat.exists == False
 
 
 
-    - stat: path=/etc/nrpe.cfg
-      register: nrpe_cfg
+      - stat: path=/etc/nrpe.cfg
+        register: nrpe_cfg
 
-    - name: Installing nagios agent on SuSE systems .....
-      import_playbook: suse12client-config.yml
-      when: 
-        - ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
-        - nrpe_cfg.stat.exists == False
+      - name: Installing nagios agent on SuSE systems .....
+        import_playbook: suse12client-config.yml
+        when: 
+          - ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
+          - nrpe_cfg.stat.exists == False
 
 
 
