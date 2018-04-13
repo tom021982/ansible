@@ -8,7 +8,7 @@
         register: nrpe_file
   
       - name: Installing nagios agent on CentOS systems....
-        include: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/centOS7dot4client-config.yml
+        import_tasks: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/centOS7dot4client-config.yml
         when: 
           - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
           - nrpe_file.stat.exists == False
@@ -19,7 +19,7 @@
         register: nrpe_cfg
 
       - name: Installing nagios agent on SuSE systems .....
-        include: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/suse12client-config.yml
+        import_tasks: https://raw.githubusercontent.com/tomsana/ansible/master/nagios-playbook/suse12client-config.yml
         when: 
           - ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
           - nrpe_cfg.stat.exists == False
