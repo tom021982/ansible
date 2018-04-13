@@ -1,6 +1,6 @@
 ---
   - name: This playbook configures nagios client for SUSE OS family
-    hosts: nodes
+    hosts: all
 
     vars:
       nagios_server: 192.168.56.11

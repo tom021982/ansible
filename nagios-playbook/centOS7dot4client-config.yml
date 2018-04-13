@@ -1,6 +1,6 @@
 ---
   - name: This playbook configures nagios client(s) for CentOS nodes.
-    hosts: nodes
+    hosts: all
     
     vars:
       nagios_server: 192.168.56.11
