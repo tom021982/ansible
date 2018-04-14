@@ -8,7 +8,7 @@
         register: nrpe_file
   
       - name: Installing nagios agent on CentOS systems....
-        local_action: command ansible-playbook _12__nagios_automation/nagios-playbook/centOS7dot4client-config.yml
+        import_playbook: nagios-playbook/centOS7dot4client-config.yml
         when: 
           - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
           - nrpe_file.stat.exists == False
@@ -19,7 +19,7 @@
         register: nrpe_cfg
 
       - name: Installing nagios agent on SuSE systems .....
-        local_action: command ansible-playbook _12__nagios_automation/nagios-playbook/suse12client-config.yml
+        import_playbook: nagios-playbook/suse12client-config.yml
         when: 
           - ansible_distribution == 'SuSE' or ansible_distribution == 'SLES'
           - nrpe_cfg.stat.exists == False
