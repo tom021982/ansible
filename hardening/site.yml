@@ -6,7 +6,7 @@
     - hardening-CIS
   vars:
     rhel7cis_time_synchronization_servers:
-      - 16.110.135.123
+      - x.x.x.x.
     rhel7cis_firewall_services:
       - ssh
     rhel7cis_host_allow:
