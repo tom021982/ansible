@@ -1,0 +1,60 @@
+---
+# vars file for RHEL7-CIS
+# override variables from the defaults by populating this file with your specific variables
+
+rhel7cis_time_synchronization: chrony
+#rhel7cis_time_synchronization: ntp
+
+rhel7cis_time_synchronization_servers:
+    - <replace with ntp server ip>
+    - <replace with ntp server ip>
+
+rhel7cis_dhcp_server: true
+rhel7cis_httpd_server: true
+rhel7cis_telnet_required: true
+rhel7cis_xinetd_required: true
+
+rhel7cis_is_router: true
+
+# .tmp mount, disabled as broke API's
+cis_1_1_2: false
+cis_1_1_3: false
+
+##### partition options, not posible in this version of RHOSP
+cis_1_1_6: false
+cis_1_1_7: false
+cis_1_1_8: false
+cis_1_1_9: false
+cis_1_1_10: false
+cis_1_1_11: false
+cis_1_1_12: false
+cis_1_1_13: false
+cis_1_1_14: false
+
+
+#### GPG checks. Disabled until satellite server available
+cis_1_2_2: false
+
+##### GRUB bootloader access, disabled as may be too disruptive, need console(iLO) access for node to boot
+cis_1_4_2: false
+
+
+## yum update all, heavy handed, disabled for now
+cis_1_8: false
+
+#sysctl
+cis_3_2_3: false
+cis_3_3_2: false
+
+# hosts.allow file, disabled for now, need to add proper address ranges
+cis_3_4_2: false
+cis_3_4_3: false
+## firewall, handled by different playbooks
+cis_3_6: false
+cis_3_6_1: false
+cis_3_6_2: false
+cis_3_6_3: false
+cis_3_6_4: false
+cis_3_6_5: false
+cis_3_7: false
+

@@ -1,0 +1,13 @@
+# RHEL-07-010371 - If three unsuccessful logon attempts within 15 minutes occur the associated account must be locked.
+
+# The following does not satisfy CIS-CAT checks
+#auth required pam_faillock.so preauth silent audit deny="{{ security_pam_faillock_attempts }}" "{{ security_pam_faillock_deny_root | bool | ternary('even_deny_root','') }}" fail_interval="{{ security_pam_faillock_interval }}" unlock_time="{{ security_pam_faillock_unlock_time }}"
+#auth [success=1 default=bad] pam_unix.so
+#auth [default=die] pam_faillock.so authfail audit deny="{{ security_pam_faillock_attempts }}" "{{ security_pam_faillock_deny_root | bool | ternary('even_deny_root','') }}" fail_interval="{{ security_pam_faillock_interval }}" unlock_time="{{ security_pam_faillock_unlock_time }}"
+#auth sufficient pam_faillock.so authsucc audit deny="{{ security_pam_faillock_attempts }}" "{{ security_pam_faillock_deny_root | bool | ternary('even_deny_root','') }}" fail_interval="{{ security_pam_faillock_interval }}" unlock_time="{{ security_pam_faillock_unlock_time }}"
+
+# The following should satisfy the CIS-CAT regexp if the variables are set to the right values
+auth required pam_faillock.so preauth audit silent deny={{ security_pam_faillock_attempts }} unlock_time={{ security_pam_faillock_unlock_time }}
+auth [success=1 default=bad] pam_unix.so
+auth [default=die] pam_faillock.so authfail audit deny={{ security_pam_faillock_attempts }} unlock_time={{ security_pam_faillock_unlock_time }}
+auth sufficient pam_faillock.so authsucc audit deny={{ security_pam_faillock_attempts }} unlock_time={{ security_pam_faillock_unlock_time }}

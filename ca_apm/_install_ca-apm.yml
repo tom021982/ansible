@@ -1,0 +1,29 @@
+---
+- hosts: all
+  strategy: free
+  remote_user: roothp
+  become: yes
+  become_method: sudo
+  gather_facts: yes
+
+  vars:
+    - STATE: "absent"    # present or absent
+
+  vars_files:
+    - "{{ playbook_dir }}/../vars/local.yml"
+    - "{{ playbook_dir }}/../vars/main.yml"
+
+  tasks:
+
+    - include: "{{ playbook_dir}}/../roles/ca-apm/tasks/machineagent.yml"
+      tags:
+        - ca-apm
+        - machineagent
+
+    - include: "{{ playbook_dir}}/../roles/ca-apm/tasks/javaagent.yml"
+      tags:
+        - ca-apm
+        - javaagent
+
+#- name: include restart all tomcats
+#  include: "{{ playbook_dir}}/_restart_all_tomcats_new.yml"

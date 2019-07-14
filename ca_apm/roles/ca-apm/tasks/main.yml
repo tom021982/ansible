@@ -1,0 +1,10 @@
+ - include: "machineagent.yml"
+   tags:
+     - caapm
+     - machineagent
+
+ - include: "javaagent.yml"
+   tags:
+     - caapm
+     - javaagent
+

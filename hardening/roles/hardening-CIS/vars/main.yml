@@ -1,0 +1,39 @@
+---
+# vars file for RHEL7-CIS
+# override variables from the defaults by populating this file with your specific variables
+
+rhel7cis_time_synchronization: chrony
+
+rhel7cis_time_synchronization_servers:
+    - 16.110.135.123
+
+rhel7cis_host_allow: []
+
+rhel7cis_dhcp_server: false
+rhel7cis_httpd_server: false
+rhel7cis_telnet_required: false
+
+rhel7cis_is_router: false
+
+# .tmp mount, disabled as broke API's
+cis_1_1_2: false
+cis_1_1_3: false
+
+##### partition options, not posible in this version of RHOSP
+cis_1_1_6: false
+cis_1_1_7: false
+cis_1_1_8: false
+cis_1_1_9: false
+cis_1_1_10: false
+cis_1_1_11: false
+cis_1_1_12: false
+cis_1_1_13: false
+cis_1_1_14: false
+
+##### GRUB bootloader access, disabled as may be too disruptive, need console(iLO) access for node to boot
+cis_1_4_2: false
+
+## yum update all: already included in the packer template steps
+cis_1_8: false
+
+rhel7cis_firewall: firewalld

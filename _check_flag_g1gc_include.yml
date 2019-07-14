@@ -1,0 +1,75 @@
+## this will loop over all tomcat Instances
+##
+
+- name: check flag **UseG1GC** in process status
+  shell: "ps -ef | grep -i {{ appidfull }} | grep G1GC"
+  register: ps_flag_g1gc
+  ignore_errors: yes
+
+- name: set g1gc_ps to X
+  set_fact:
+    g1gc_ps: 'X'
+  when: ps_flag_g1gc.rc == 0 and ps_flag_g1gc is defined
+
+- name: set g1gc_ps to -
+  set_fact:
+    g1gc_ps: '-'
+  when: ps_flag_g1gc.rc != 0 or ps_flag_g1gc is not defined
+
+
+## Tomcat 8.0 +++++++++++
+
+- name: check if tomcat8.0_xxxxx_env.sh file exist 
+  stat: "path={{ tc8_tc_setenv_script }}"
+  register: stat_tc8_tc_setenv_script
+  ignore_errors: yes
+
+- name: search string **UseG1GC** in tomcat8.0_xxxxx_env.sh file
+  shell: "grep UseG1GC {{ tc8_tc_setenv_script }}"
+  register: check_useg1gc_80
+  ignore_errors: yes
+
+- name: set g1gc_env_80 to X
+  set_fact:
+    g1gc_env_80: 'X'
+  when: stat_tc8_tc_setenv_script.stat.exists == true and check_useg1gc_80.rc == 0
+  ignore_errors: yes
+
+- name: set g1gc_env_80 to -
+  set_fact:
+    g1gc_env_80: '-'
+  when: stat_tc8_tc_setenv_script.stat.exists == false or check_useg1gc_80.rc != 0
+  ignore_errors: yes
+
+
+## Tomcat 8.5 +++++++++++
+
+- name: check if tomcat8.5_xxxxx_env.sh file exists
+  stat: "path={{ tc85_tc_setenv_script }}"
+  register: stat_tc85_tc_setenv_script
+  ignore_errors: yes
+
+- name: search string **UseG1GC** in _env.sh file
+  shell: "grep UseG1GC {{ tc85_tc_setenv_script }}"
+  register: check_useg1gc_85
+  ignore_errors: yes
+
+- name: set g1gc_env_85 to X
+  set_fact:
+    g1gc_env_85: 'X'
+  when: stat_tc85_tc_setenv_script.stat.exists == true and check_useg1gc_85.rc == 0
+  ignore_errors: yes
+
+- name: set g1gc_env_85 to -
+  set_fact:
+    g1gc_env_85: '-'
+  when: stat_tc85_tc_setenv_script.stat.exists == false or check_useg1gc_85.rc != 0
+  ignore_errors: yes
+
+## Print Output
+- name: print out CSV
+  debug:
+    msg: "{{ ansible_hostname }};{{ appidfull }};{{ g1gc_ps }};{{ g1gc_env_80 }};{{ g1gc_env_85 }}"
+
+
+#########################################################

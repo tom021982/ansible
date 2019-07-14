@@ -1,0 +1,17 @@
+- name: CIS hardening
+  hosts: all
+  become: yes
+
+  roles:
+    - hardening-CIS
+  vars:
+    rhel7cis_time_synchronization_servers:
+      - 16.110.135.123
+    rhel7cis_firewall_services:
+      - ssh
+    rhel7cis_host_allow:
+      - "15.0.0.0/255.0.0.0"
+      - "16.0.0.0/255.0.0.0"
+    cis_3_4_2: true
+    cis_3_4_3: true
+

@@ -1,0 +1,8 @@
+---
+# Post tasks
+
+- name: Perform YUM package cleanup
+  command: yum -y autoremove
+  when: post_tasks
+  changed_when: no
+  ignore_errors: yes

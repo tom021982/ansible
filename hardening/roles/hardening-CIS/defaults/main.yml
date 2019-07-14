@@ -1,0 +1,635 @@
+---
+# defaults file for RHEL7-CIS
+rhel7cis_skip_for_travis: false
+
+rhel7cis_section1: true
+rhel7cis_section2: true
+rhel7cis_section3: true
+rhel7cis_section4: true
+rhel7cis_section5: true
+rhel7cis_section6: true
+
+rhel7cis_selinux_disable: false
+
+# Service configuration booleans set true to keep service
+rhel7cis_avahi_server: false
+rhel7cis_cups_server: false
+rhel7cis_dhcp_server: false
+rhel7cis_ldap_server: false
+rhel7cis_telnet_server: false
+rhel7cis_nfs_server: false
+rhel7cis_rpc_server: false
+rhel7cis_ntalk_server: false
+rhel7cis_rsyncd_server: false
+rhel7cis_tftp_server: false
+rhel7cis_rsh_server: false
+rhel7cis_nis_server: false
+rhel7cis_snmp_server: false
+rhel7cis_squid_server: false
+rhel7cis_smb_server: false
+rhel7cis_dovecot_server: false
+rhel7cis_httpd_server: false
+rhel7cis_vsftpd_server: false
+rhel7cis_named_server: false
+rhel7cis_nfs_rpc_server: false
+rhel7cis_is_mail_server: false
+rhel7cis_bind: false
+rhel7cis_vsftpd: false
+rhel7cis_httpd: false
+rhel7cis_dovecot: false
+rhel7cis_samba: false
+rhel7cis_squid: false
+rhel7cis_net_snmp: false
+rhel7cis_allow_autofs: false
+
+# xinetd required
+rhel7cis_xinetd_required: false
+
+# RedHat Satellite Subscription items
+rhel7cis_rhnsd_required: false
+
+# 1.4.2 Bootloader password
+
+rhel7cis_bootloader_password: random
+rhel7cis_set_boot_pass: false
+
+# System network parameters (host only OR host and router)
+rhel7cis_is_router: false
+
+# IPv6 required
+rhel7cis_ipv6_required: false
+
+# AIDE
+rhel7cis_config_aide: true
+# AIDE cron settings
+rhel7cis_aide_cron:
+  cron_user: root
+  aide_job: '/usr/sbin/aide --check'
+  aide_minute: 0
+  aide_hour: 5
+  aide_day: '*'
+  aide_month: '*'
+  aide_weekday: '*'
+
+# SELinux policy
+rhel7cis_selinux_pol: targeted
+
+# Set to 'true' if X Windows is needed in your environment
+rhel7cis_xwindows_required: no
+
+rhel7cis_openldap_clients_required: false
+rhel7cis_telnet_required: false
+rhel7cis_talk_required: false
+rhel7cis_rsh_required: false
+rhel7cis_ypbind_required: false
+
+# Time Synchronization
+rhel7cis_time_synchronization: chrony
+#rhel7cis_time_synchronization: ntp
+
+rhel7cis_time_synchronization_servers:
+    - 0.pool.ntp.org
+    - 1.pool.ntp.org
+    - 2.pool.ntp.org
+    - 3.pool.ntp.org
+
+# 3.4.2 | PATCH | Ensure /etc/hosts.allow is configured
+rhel7cis_host_allow:
+    - "10.0.0.0/255.0.0.0"
+    - "172.16.0.0/255.240.0.0"
+    - "192.168.0.0/255.255.0.0"
+
+#rhel7cis_firewall: firewalld
+rhel7cis_firewall: iptables
+
+rhel7cis_firewall_services:
+    - ssh
+    - dhcpv6-client
+
+# settings for account lockout after failed login attempts
+# 
+security_pam_faillock_interval: 900      # period of time during which failed logins occur
+security_pam_faillock_attempts: 5        # number of failed logins to trigger an account lockout
+security_pam_faillock_deny_root: yes     # lockout root account
+security_pam_faillock_unlock_time: 900   # period of time to lock the account for
+
+security_password_remember_password: 5
+
+# Warning Banner Content (issue, issue.net, motd)
+rhel7cis_warning_banner: |
+    Authorized uses only. All activity may be monitored and reported.
+
+# End Banner
+post_tasks: false
+
+
+
+############################## section 1 #####################################
+# **- name: "SCORED | 1.1.1.1 | PATCH | Ensure mounting of cramfs filesystems is disabled"
+cis_1_1_1_1: true
+# **- name: "SCORED | 1.1.1.2 | PATCH | Ensure mounting of freevxfs filesystems is disabled"
+cis_1_1_1_2: true
+# **- name: "SCORED | 1.1.1.3 | PATCH | Ensure mounting of jffs2 filesystems is disabled"
+cis_1_1_1_3: true
+# **- name: "SCORED | 1.1.1.4 | PATCH | Ensure mounting of hfs filesystems is disabled"
+cis_1_1_1_4: true
+# **- name: "SCORED | 1.1.1.5 | PATCH | Ensure mounting of hfsplus filesystems is disabled"
+cis_1_1_1_5: true
+# **- name: "SCORED | 1.1.1.6 | PATCH | Ensure mounting of squashfs filesystems is disabled"
+cis_1_1_1_6: true
+# **- name: "SCORED | 1.1.1.7 | PATCH | Ensure mounting of udf filesystems is disabled"
+cis_1_1_1_7: true
+# **- name: "SCORED | 1.1.1.8 | PATCH | Ensure mounting of FAT filesystems is disabled"
+cis_1_1_1_8: true
+# # - name: "SCORED | 1.1.2 | PATCH | Ensure separate partition exists for /tmp | enable and start/restart tmp.mount"
+cis_1_1_2: true
+# # - name: "SCORED | 1.1.3 | PATCH | Ensure nodev option set on /tmp partition\n
+cis_1_1_3: true
+
+# ####### not possible to use whole disk images with this version of tripleo python client
+# !- name: "SCORED | 1.1.6 | PATCH | Ensure separate partition exists for /var"
+cis_1_1_6: true
+# !- name: "SCORED | 1.1.7 | PATCH | Ensure separate partition exists for /var/tmp"
+cis_1_1_7: true
+# !- name: "SCORED | 1.1.8 | PATCH | Ensure nodev option set on /var/tmp partition"
+cis_1_1_8: true
+# !- name: "SCORED | 1.1.9 | PATCH | Ensure nosuid option set on /var/tmp partition"
+cis_1_1_9: true
+# !- name: "SCORED | 1.1.10 | PATCH | Ensure noexec option set on /var/tmp partition"
+cis_1_1_10: true
+# !- name: "SCORED | 1.1.11 | PATCH | Ensure separate partition exists for /var/log"
+cis_1_1_11: true
+# !- name: "SCORED | 1.1.12 | PATCH | Ensure separate partition exists for /var/log/audit"
+cis_1_1_12: true
+# !- name: "SCORED | 1.1.13 | PATCH | Ensure separate partition exists for /home"
+cis_1_1_13: true
+
+# !- name: "SCORED | 1.1.14 | PATCH | Ensure nodev option set on /home partition"
+cis_1_1_14: true
+# **- name: "SCORED | 1.1.15 | PATCH | Ensure nodev option set on /dev/shm partition
+#            SCORED | 1.1.16 | PATCH | Ensure nosuid option set on /dev/shm partition
+#            SCORED | 1.1.17 | PATCH | Ensure noexec option set on /dev/shm partition"
+cis_1_1_15: true
+# !- name: "NOTSCORED | 1.1.18 | PATCH | Ensure nodev option set on removable media partitions"
+cis_1_1_18: true
+# !- name: "NOTSCORED | 1.1.19 | PATCH | Ensure nosuid option set on removable media partitions"
+cis_1_1_19: true
+# !- name: "NOTSCORED | 1.1.20 | PATCH | Ensure noexec option set on removable media partitions"
+cis_1_1_20: true
+# **- name: "SCORED | 1.1.21 | PATCH | Ensure sticky bit is set on all world-writable directories"
+cis_1_1_21: true
+# **- name: "SCORED | 1.1.22 | PATCH | Disable Automounting"
+cis_1_1_22: true
+
+# ###### will be configured correctly once satellite server/red hat subscriptions are available
+# !- name: "NOTSCORED | 1.2.1 | PATCH | Ensure package manager repositories are configured"
+
+# **- name: "SCORED | 1.2.2 | PATCH | Ensure gpgcheck is globally activated"
+# **- name: "SCORED | 1.2.2 | PATCH | Ensure gpgcheck is globally activated"
+# **- name: "SCORED | 1.2.2 | PATCH | Ensure gpgcheck is globally activated"
+cis_1_2_2: true
+# !- name: "NOTSCORED | 1.2.3 | PATCH | Ensure GPG keys are configured"
+# !- name: "NOTSCORED | 1.2.4 | PATCH | Ensure Red Hat Network or Subscription Manager connection is configured"
+
+
+# **- name: "NOTSCORED | 1.2.5 | PATCH | Disable the rhnsd Daemon"
+cis_1_2_5: true
+# **- name: "SCORED | 1.3.1 | PATCH | Ensure AIDE is installed"
+# **- name: "SCORED | 1.3.1 | PATCH | Ensure AIDE is installed"
+cis_1_3_1: true
+# **- name: "SCORED | 1.3.2 | PATCH | Ensure filesystem integrity is regularly checked"
+cis_1_3_2: true
+# **- name: "SCORED | 1.4.1 | PATCH | Ensure permissions on bootloader config are configured"
+# **- name: "SCORED | 1.4.1 | PATCH | Ensure permissions on bootloader config are configured"
+cis_1_4_1: true
+
+# ##### disabled until firther discussion. valid to enforce for production sites, probably too disruptive for test systems (need console access to boot nodes due to password)
+# #- name: "SCORED | 1.4.2 | PATCH | Ensure bootloader password is set"
+# #- name: "SCORED | 1.4.2 | PATCH | Ensure bootloader password is set"
+cis_1_4_2: true
+
+# !- name: "NOTSCORED | 1.4.3 | PATCH | Ensure authentication required for single user mode"
+# !- name: "NOTSCORED | 1.4.3 | PATCH | Ensure authentication required for single user mode"
+# **- name: "SCORED | 1.5.1 | PATCH | Ensure core dumps are restricted"
+# **- name: "SCORED | 1.5.1 | PATCH | Ensure core dumps are restricted"
+cis_1_5_1: true
+
+# !- name: "NOTSCORED | 1.5.2 | PATCH | Ensure XD/NX support is enabled"
+# **- name: "SCORED | 1.5.3 | PATCH | Ensure address space layout randomization (ASLR) is enabled"
+cis_1_5_3: true
+# **- name: "SCORED | 1.5.4 | PATCH | Ensure prelink is disabled"
+# **- name: "SCORED | 1.5.4 | PATCH | Ensure prelink is disabled"
+cis_1_5_4: true
+# **- name: "SCORED | 1.6.1.1 | PATCH | Ensure SELinux is not disabled in bootloader configuration"
+cis_1_6_1_1: true
+# **- name: "SCORED | 1.6.1.2 | PATCH | Ensure the SELinux state is enforcing"
+cis_1_6_1_2: true
+# **- name: "SCORED | 1.6.1.3 | PATCH | Ensure SELinux policy is configured"
+cis_1_6_1_3: true
+# **- name: "SCORED | 1.6.1.4 | PATCH | Ensure SETroubleshoot is not installed"
+cis_1_6_1_4: true
+# **- name: "SCORED | 1.6.1.5 | PATCH | Ensure the MCS Translation Service (mcstrans) is not installed"
+cis_1_6_1_5: true
+# **- name: "SCORED | 1.6.2 | PATCH | Ensure SELinux is installed"
+cis_1_6_2: true
+# **- name: "SCORED | 1.7.1.1 | PATCH | Ensure message of the day is configured properly"
+cis_1_7_1_1: true
+# **- name: "NOTSCORED | 1.7.1.2 | PATCH | Ensure local login warning banner is configured properly"
+cis_1_7_1_2: true
+# **- name: "NOTSCORED | 1.7.1.3 | PATCH | Ensure remote login warning banner is configured properly"
+cis_1_7_1_3: true
+# **- name: "NOTSCORED | 1.7.1.4 | PATCH | Ensure permissions on /etc/motd are configured"
+cis_1_7_1_4: true
+# **- name: "SCORED | 1.7.1.5 | PATCH | Ensure permissions on /etc/issue are configured"
+cis_1_7_1_5: true
+# **- name: "NOTSCORED | 1.7.1.6 | PATCH | Ensure permissions on /etc/issue.net are configured"
+cis_1_7_1_6: true
+# **- name: "SCORED | 1.7.2 | PATCH | Ensure GDM login banner is configured"
+cis_1_7_2: true
+# #- name: "NOTSCORED | 1.8 | PATCH | Ensure updates, patches, and additional security software are installed"
+cis_1_8: true
+
+############################## section 2 #####################################
+# **- name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-dgram"
+# **- name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-dgram"
+# **- name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-stream"
+# **- name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-stream"
+cis_2_1_1: true
+# **- name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-dgram"
+# **- name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-dgram"
+# **- name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-stream"
+# **- name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-stream"
+cis_2_1_2: true
+# **- name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-dgram"
+# **- name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-dgram"
+# **- name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-stream"
+# **- name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-stream"
+cis_2_1_3: true
+# **- name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-dgram"
+# **- name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-dgram"
+# **- name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-stream"
+# **- name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-stream"
+cis_2_1_4: true
+# **- name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-dgram"
+# **- name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-dgram"
+# **- name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-stream"
+# **- name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-stream"
+cis_2_1_5: true
+# **- name: "SCORED | 2.1.6 | PATCH | Ensure tftp server is not enabled"
+# **- name: "SCORED | 2.1.6 | PATCH | Ensure tftp server is not enabled"
+cis_2_1_6: true
+# **- name: "SCORED | 2.1.7 | PATCH | Ensure xinetd is not enabled"
+cis_2_1_7: true
+# **- name: "NOTSCORED | 2.2.1.1 | PATCH | Ensure time synchronization is in use - service install"
+# **- name: "NOTSCORED | 2.2.1.1 | PATCH | Ensure time synchronization is in use - service start"
+# **- name: "NOTSCORED | 2.2.1.1 | PATCH | Ensure time synchronization is in use - service stop ntp"
+# **- name: "NOTSCORED | 2.2.1.1 | PATCH | Ensure time synchronization is in use - service stop chrony"
+cis_2_2_1_1: true
+# **- name: "SCORED | 2.2.1.2 | PATCH | Ensure ntp is configured | modify /etc/ntp.conf"
+# **- name: "SCORED | 2.2.1.2 | PATCH | Ensure ntp is configured | modify /etc/sysconfig/ntpd"
+# **- name: "SCORED | 2.2.1.2 | PATCH | Ensure ntp is configured | modify /usr/lib/systemd/system/ntpd.service"
+cis_2_2_1_2: true
+# #- name: "SCORED | 2.2.1.3 | PATCH | Ensure chrony is configured"
+# #- name: "SCORED | 2.2.1.3 | PATCH | Ensure chrony is configured | modify /etc/sysconfig/chronyd | 1"
+cis_2_2_1_3: true
+# **- name: "SCORED | 2.2.2 | PATCH | Ensure X Window System is not installed"
+cis_2_2_2: true
+# **- name: "SCORED | 2.2.3 | PATCH | Ensure Avahi Server is not enabled"
+cis_2_2_3: true
+# **- name: "SCORED | 2.2.4 | PATCH | Ensure CUPS is not enabled"
+cis_2_2_4: true
+# **- name: "SCORED | 2.2.5 | PATCH | Ensure DHCP Server is not enabled"
+cis_2_2_5: true
+# **- name: "SCORED | 2.2.6 | PATCH | Ensure LDAP server is not enabled"
+cis_2_2_6: true
+# **- name: "SCORED | 2.2.7 | PATCH | Ensure NFS and RPC are not enabled"
+# **- name: "SCORED | 2.2.7 | PATCH | Ensure NFS and RPC are not enabled"
+cis_2_2_7: true
+# **- name: "SCORED | 2.2.8 | PATCH | Ensure DNS Server is not enabled"
+cis_2_2_8: true
+# **- name: "SCORED | 2.2.9 | PATCH | Ensure FTP Server is not enabled"
+cis_2_2_9: true
+# **- name: "SCORED | 2.2.10 | PATCH | Ensure HTTP server is not enabled"
+cis_2_2_10: true
+# **- name: "SCORED | 2.2.11 | PATCH | Ensure IMAP and POP3 server is not enabled"
+cis_2_2_11: true
+# **- name: "SCORED | 2.2.12 | PATCH | Ensure Samba is not enabled"
+cis_2_2_12: true
+# **- name: "SCORED | 2.2.13 | PATCH | Ensure HTTP Proxy Server is not enabled"
+cis_2_2_13: true
+# **- name: "SCORED | 2.2.14 | PATCH | Ensure SNMP Server is not enabled"
+cis_2_2_14: true
+# **- name: "SCORED | 2.2.15 | PATCH | Ensure mail transfer agent is configured for local-only mode"
+cis_2_2_15: true
+# **- name: "SCORED | 2.2.16 | PATCH | Ensure NIS Server is not enabled"
+cis_2_2_16: true
+# **- name: "SCORED | 2.2.17 | PATCH | Ensure rsh server is not enabled | rsh"
+# **- name: "SCORED | 2.2.17 | PATCH | Ensure rsh server is not enabled | rlogin"
+# **- name: "SCORED | 2.2.17 | PATCH | Ensure rsh server is not enabled | rexec"
+cis_2_2_17: true
+# **- name: "SCORED | 2.2.18 | PATCH | Ensure telnet server is not enabled"
+cis_2_2_18: true
+# **- name: "SCORED | 2.2.19 | PATCH | Ensure tftp server is not enabled"
+cis_2_2_19: true
+# **- name: "SCORED | 2.2.20 | PATCH | Ensure rsync service is not enabled "
+cis_2_2_20: true
+# **- name: "SCORED | 2.2.21 | PATCH | Ensure talk server is not enabled"
+cis_2_2_21: true
+# **- name: "SCORED | 2.3.1 | PATCH | Ensure NIS Client is not installed"
+cis_2_3_1: true
+# **- name: "SCORED | 2.3.2 | PATCH | Ensure rsh client is not installed"
+cis_2_3_2: true
+# **- name: "SCORED | 2.3.3 | PATCH | Ensure talk client is not installed"
+cis_2_3_3: true
+# **- name: "SCORED | 2.3.4 | PATCH | Ensure telnet client is not installed"
+cis_2_3_4: true
+# **- name: "SCORED | 2.3.5 | PATCH | Ensure LDAP client is not installed"
+cis_2_3_5: true
+
+############################## section 3 #####################################
+# **- name: "SCORED | 3.1.1 | PATCH | Ensure IP forwarding is disabled"
+cis_3_1_1: true
+# **- name: "SCORED | 3.1.2 | PATCH | Ensure packet redirect sending is disabled"
+cis_3_1_2: true
+# **- name: "SCORED | 3.2.1 | PATCH | Ensure source routed packets are not accepted"
+cis_3_2_1: true
+# **- name: "SCORED | 3.2.2 | PATCH | Ensure ICMP redirects are not accepted"
+cis_3_2_2: true
+# **- name: "SCORED | 3.2.3 | PATCH | Ensure secure ICMP redirects are not accepted"
+cis_3_2_3: true
+# **- name: "SCORED | 3.2.4 | PATCH | Ensure suspicious packets are logged"
+cis_3_2_4: true
+# **- name: "SCORED | 3.2.5 | PATCH | Ensure broadcast ICMP requests are ignored"
+cis_3_2_5: true
+# **- name: "SCORED | 3.2.6 | PATCH | Ensure bogus ICMP responses are ignored"
+cis_3_2_6: true
+# **- name: "SCORED | 3.2.7 | PATCH | Ensure Reverse Path Filtering is enabled"
+cis_3_2_7: true
+# **- name: "SCORED | 3.2.8 | PATCH | Ensure TCP SYN Cookies is enabled"
+cis_3_2_8: true
+# **- name: "SCORED | 3.3.1 | PATCH | Ensure IPv6 router advertisements are not accepted"
+cis_3_3_1: true
+# **- name: "SCORED | 3.3.2 | PATCH | Ensure IPv6 redirects are not accepted"
+cis_3_3_2: true
+# **- name: "NOTSCORED | 3.3.3 | PATCH | Ensure IPv6 is disabled"
+cis_3_3_3: true
+# **- name: "SCORED | 3.4.1 | PATCH | Ensure TCP Wrappers is installed"
+cis_3_4_1: true
+# **- name: "SCORED | 3.4.2 | PATCH | Ensure /etc/hosts.allow is configured"
+cis_3_4_2: true
+# **- name: "SCORED | 3.4.3 | PATCH | Ensure /etc/hosts.deny is configured"
+cis_3_4_3: true
+# **- name: "SCORED | 3.4.4 | PATCH | Ensure permissions on /etc/hosts.allow are configured"
+cis_3_4_4: true
+# **- name: "SCORED | 3.4.5 | PATCH | Ensure permissions on /etc/hosts.deny are 644"
+cis_3_4_5: true
+# **- name: "NOTSCORED | 3.5.1 | PATCH | Ensure DCCP is disabled"
+cis_3_5_1: true
+# **- name: "NOTSCORED | 3.5.2 | PATCH | Ensure SCTP is disabled"
+cis_3_5_2: true
+# **- name: "NOTSCORED | 3.5.3 | PATCH | Ensure RDS is disabled"
+cis_3_5_3: true
+# **- name: "NOTSCORED | 3.5.4 | PATCH | Ensure TIPC is disabled"
+cis_3_5_4: true
+# # - name: "SCORED | 3.6 | PATCH | Ensure firewalld is installed and started | CUSTOM"
+# # - name: "SCORED | 3.6 | PATCH | Ensure firewalld is installed and started | CUSTOM"
+cis_3_6: true
+# # - name: "SCORED | 3.6.1 | PATCH | Ensure iptables is installed"
+# # - name: "SCORED | 3.6.1 | PATCH | Ensure iptables is installed and started"
+cis_3_6_1: true
+# # - name: "SCORED | 3.6.2 | PATCH | Ensure default deny firewall policy"
+# # - name: "SCORED | 3.6.2 | PATCH | Ensure default deny firewall policy"
+# # - name: "SCORED | 3.6.2 | PATCH | Ensure default deny firewall policy"
+cis_3_6_2: true
+# # - name: "SCORED | 3.6.3 | PATCH | Ensure loopback traffic is configured"
+cis_3_6_3: true
+# # - name: "NOTSCORED | 3.6.4 | PATCH | Ensure outbound and established connections are configured"
+cis_3_6_4: true
+# # - name: "SCORED | 3.6.5 | PATCH | Ensure firewall rules exist for all open ports"
+# # - name: "SCORED | 3.6.5 | PATCH | Ensure firewall rules exist for all open ports"
+cis_3_6_5: true
+# # - name: "NOTSCORED | 3.7 | PATCH | Ensure wireless interfaces are disabled"
+cis_3_7: true
+
+############################## section 4 #####################################
+# ################### All audit logs are level 2, regular syslog is level 1 but that is being handled by opstools
+
+# **- name: "NOTSCORED | 4.1.1.1 | PATCH | Ensure audit log storage size is configured"
+cis_4_1_1_1: true
+# ###### below point will shut down system if audit logs run out of space
+# **- name: "SCORED | 4.1.1.2 | PATCH | Ensure system is disabled when audit logs are full"
+cis_4_1_1_2: true
+# **- name: "SCORED | 4.1.1.3 | PATCH | Ensure audit logs are not automatically deleted"
+cis_4_1_1_3: true
+# **- name: "SCORED | 4.1.2 | PATCH | Ensure auditd service is enabled"
+cis_4_1_2: true
+# **- name: "SCORED | 4.1.3 | PATCH | Ensure auditing for processes that start prior to auditd is enabled"
+cis_4_1_3: true
+# !- name: "SCORED | 4.1.4 | PATCH | Ensure events that modify date and time information are collected"
+cis_4_1_4: true
+# !- name: "SCORED | 4.1.5 | PATCH | Ensure events that modify user/group information are collected"
+cis_4_1_5: true
+# !- name: "SCORED | 4.1.6 | PATCH | Ensure events that modify the system's network environment are collected"
+cis_4_1_6: true
+# !- name: "SCORED | 4.1.7 | PATCH | Ensure events that modify the system's Mandatory Access Controls are collected"
+cis_4_1_7: true
+# !- name: "SCORED | 4.1.8 | PATCH | Ensure login and logout events are collected"
+cis_4_1_8: true
+# !- name: "SCORED | 4.1.9 | PATCH | Ensure session initiation information is collected"
+cis_4_1_9: true
+# !- name: "SCORED | 4.1.10 | PATCH | Ensure discretionary access control permission modification events are collected"
+cis_4_1_10: true
+# !- name: "SCORED | 4.1.11 | PATCH | Ensure unsuccessful unauthorized file access attempts are collected"
+cis_4_1_11: true
+# !- name: "SCORED | 4.1.12 | PATCH | Ensure use of privileged commands is collected"
+cis_4_1_12: true
+# **- name: "SCORED | 4.1.13 | PATCH | Ensure successful file system mounts are collected"
+# **- name: "SCORED | 4.1.13 | PATCH | Ensure successful file system mounts are collected"
+# **- name: "SCORED | 4.1.13 | PATCH | Ensure successful file system mounts are collected"
+cis_4_1_13: true
+# !- name: "SCORED | 4.1.14 | PATCH | Ensure file deletion events by users are collected"
+cis_4_1_14: true
+# **- name: "SCORED | 4.1.15 | PATCH | Ensure changes to system administration scope (sudoers) is collected"
+# **- name: "SCORED | 4.1.15 | PATCH | Ensure changes to system administration scope (sudoers) is collected"
+# **- name: "SCORED | 4.1.15 | PATCH | Ensure changes to system administration scope (sudoers) is collected"
+cis_4_1_15: true
+# !- name: "SCORED | 4.1.16 | PATCH | Ensure system administrator actions (sudolog) are collected"
+cis_4_1_16: true
+# !- name: "SCORED | 4.1.17 | PATCH | Ensure kernel module loading and unloading is collected"
+cis_4_1_17: true
+# !- name: "SCORED | 4.1.18 | PATCH | Ensure the audit configuration is immutable"
+cis_4_1_18: true
+
+# ###### logging handled by different solution, these points are not implemented yet either
+# # - name: "SCORED | 4.2.1.1 | PATCH | Ensure rsyslog Service is enabled"
+cis_4_2_1_1: true
+# # - name: "NOTSCORED | 4.2.1.2 | PATCH | Ensure logging is configured"
+cis_4_2_1_2: true
+# # - name: "SCORED | 4.2.1.3 | PATCH | Ensure rsyslog default file permissions configured"
+cis_4_2_1_3: true
+# # - name: "SCORED | 4.2.1.4 | PATCH | Ensure rsyslog is configured to send logs to a remote log host"
+cis_4_2_1_4: true
+# # - name: "NOTSCORED | 4.2.1.5 | PATCH | Ensure remote rsyslog messages are only accepted on designated log hosts."
+# # - name: "NOTSCORED | 4.2.1.5 | PATCH | Ensure remote rsyslog messages are only accepted on designated log hosts."
+cis_4_2_1_5: true
+# # - name: "SCORED | 4.2.2.1 | PATCH | Ensure syslog-ng service is enabled"
+cis_4_2_2_1: true
+# # - name: "NOTSCORED | 4.2.2.2 | PATCH | Ensure logging is configured"
+cis_4_2_2_2: true
+# # - name: "SCORED | 4.2.2.3 | PATCH | Ensure syslog-ng default file permissions configured"
+cis_4_2_2_3: true
+# # - name: "NOTSCORED | 4.2.2.4 | PATCH | Ensure syslog-ng is configured to send logs to a remote log host"
+cis_4_2_2_4: true
+# # - name: "NOTSCORED | 4.2.2.5 | PATCH | Ensure remote syslog-ng messages are only accepted on designated log hosts"
+cis_4_2_2_5: true
+# # - name: "SCORED | 4.2.3 | PATCH | Ensure rsyslog or syslog-ng is installed"
+cis_4_2_3: true
+# **- name: "SCORED | 4.2.4 | PATCH | Ensure permissions on all logfiles are configured"
+cis_4_2_4: true
+# # - name: "NOTSCORED | 4.3 | PATCH | Ensure logrotate is configured"
+cis_4_3: true
+############################## section 5 #####################################
+# **- name: "SCORED | 5.1.1 | PATCH | Ensure cron daemon is enabled"
+cis_5_1_1: true
+# **- name: "SCORED | 5.1.2 | PATCH | Ensure permissions on /etc/crontab are configured"
+cis_5_1_2: true
+# **- name: "SCORED | 5.1.3 | PATCH | Ensure permissions on /etc/cron.hourly are configured"
+cis_5_1_3: true
+# **- name: "SCORED | 5.1.4 | PATCH | Ensure permissions on /etc/cron.daily are configured"
+cis_5_1_4: true
+# **- name: "SCORED | 5.1.5 | PATCH | Ensure permissions on /etc/cron.weekly are configured"
+cis_5_1_5: true
+# **- name: "SCORED | 5.1.6 | PATCH | Ensure permissions on /etc/cron.monthly are configured"
+cis_5_1_6: true
+# **- name: "SCORED | 5.1.7 | PATCH | Ensure permissions on /etc/cron.d are configured"
+cis_5_1_7: true
+# **- name: "SCORED | 5.1.8 | PATCH | Ensure at/cron is restricted to authorized users"
+# **- name: "SCORED | 5.1.8 | PATCH | Ensure at/cron is restricted to authorized users"
+# **- name: "SCORED | 5.1.8 | PATCH | Ensure at/cron is restricted to authorized users"
+# **- name: "SCORED | 5.1.8 | PATCH | Ensure at/cron is restricted to authorized users"
+cis_5_1_8: true
+# **- name: "SCORED | 5.2.1 | PATCH | Ensure permissions on /etc/ssh/sshd_config are configured"
+cis_5_2_1: true
+# **- name: "SCORED | 5.2.2 | PATCH | Ensure SSH Protocol is set to 2"
+cis_5_2_2: true
+# **- name: "SCORED | 5.2.3 | PATCH | Ensure SSH LogLevel is set to INFO"
+cis_5_2_3: true
+# **- name: "SCORED | 5.2.4 | PATCH | Ensure SSH X11 forwarding is disabled"
+cis_5_2_4: true
+# **- name: "SCORED | 5.2.5 | PATCH | Ensure SSH MaxAuthTries is set to 4 or less"
+cis_5_2_5: true
+# **- name: "SCORED | 5.2.6 | PATCH | Ensure SSH IgnoreRhosts is enabled"
+cis_5_2_6: true
+# **- name: "SCORED | 5.2.7 | PATCH | Ensure SSH HostbasedAuthentication is disabled"
+cis_5_2_7: true
+# **- name: "SCORED | 5.2.8 | PATCH | Ensure SSH root login is disabled"
+cis_5_2_8: true
+# **- name: "SCORED | 5.2.9 | PATCH | Ensure SSH PermitEmptyPasswords is disabled"
+cis_5_2_9: true
+# **- name: "SCORED | 5.2.10 | PATCH | Ensure SSH PermitUserEnvironment is disabled"
+cis_5_2_10: true
+# **- name: "SCORED | 5.2.11 | PATCH | Ensure only approved ciphers are used"
+cis_5_2_11: true
+# **- name: "SCORED | 5.2.12 | PATCH | Ensure only approved MAC algorithms are used"
+cis_5_2_12: true
+# **- name: "SCORED | 5.2.13 | PATCH | Ensure SSH Idle Timeout Interval is configured"
+cis_5_2_13: true
+# **- name: "SCORED | 5.2.14 | PATCH | Ensure SSH LoginGraceTime is set to one minute or less"
+cis_5_2_14: true
+# **- name: "SCORED | 5.2.15 | PATCH | Ensure SSH access is limited"
+cis_5_2_15: true
+# **- name: "SCORED | 5.2.16 | PATCH | Ensure SSH warning banner is configured"
+cis_5_2_16: true
+# **- name: "SCORED | 5.3.1 | PATCH | Ensure password creation requirements are configured"
+cis_5_3_1: true
+# **- name: "SCORED | 5.3.2 | PATCH | Ensure lockout for failed password attempts is configured"
+cis_5_3_2: true
+# **- name: "SCORED | 5.3.3 | PATCH | Ensure password reuse is limited"
+cis_5_3_3: true
+# **- name: "SCORED | 5.3.4 | PATCH | Ensure password hashing algorithm is SHA-512"
+cis_5_3_4: true
+# **- name: "SCORED | 5.4.1.1 | PATCH | Ensure password expiration is 90 days or less"
+cis_5_4_1_1: true
+# **- name: "SCORED | 5.4.1.2 | PATCH | Ensure minimum days between password changes is 7 or more"
+cis_5_4_1_2: true
+# **- name: "SCORED | 5.4.1.3 | PATCH | Ensure password expiration warning days is 7 or more"
+cis_5_4_1_3: true
+# !- name: "SCORED | 5.4.1.4 | PATCH | Ensure inactive password lock is 30 days or less"
+cis_5_4_1_4: true
+# !- name: "SCORED | 5.4.2 | PATCH | Ensure system accounts are non-login"
+cis_5_4_2: true
+# **- name: "SCORED | 5.4.3 | PATCH | Ensure default group for the root account is GID 0"
+cis_5_4_3: true
+# !- name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 027 or more restrictive"
+cis_5_4_4: true
+# !- name: "NOTSCORED | 5.5 | PATCH | Ensure root login is restricted to system console"
+cis_5_5: true
+# **- name: "SCORED | 5.6 | PATCH | Ensure access to the su command is restricted"
+cis_5_6: true
+############################## section 6 #####################################
+# !- name: "NOTSCORED | 6.1.1 | PATCH | Audit system file permissions"
+cis_6_1_1: true
+# **- name: "SCORED | 6.1.2 | PATCH | Ensure permissions on /etc/passwd are configured"
+cis_6_1_2: true
+# **- name: "SCORED | 6.1.3 | PATCH | Ensure permissions on /etc/shadow are configured"
+cis_6_1_3: true
+# **- name: "SCORED | 6.1.4 | PATCH | Ensure permissions on /etc/group are configured"
+cis_6_1_4: true
+# **- name: "SCORED | 6.1.5 | PATCH | Ensure permissions on /etc/gshadow are configured"
+cis_6_1_5: true
+# **- name: "SCORED | 6.1.6 | PATCH | Ensure permissions on /etc/passwd- are configured"
+cis_6_1_6: true
+# **- name: "SCORED | 6.1.7 | PATCH | Ensure permissions on /etc/shadow- are configured"
+cis_6_1_7: true
+# **- name: "SCORED | 6.1.8 | PATCH | Ensure permissions on /etc/group- are configured"
+cis_6_1_8: true
+# **- name: "SCORED | 6.1.9 | PATCH | Ensure permissions on /etc/gshadow- are configured"
+cis_6_1_9: true
+# !- name: "SCORED | 6.1.10 | PATCH | Ensure no world writable files exist"
+cis_6_1_10: true
+# !- name: "SCORED | 6.1.11 | PATCH | Ensure no unowned files or directories exist"
+cis_6_1_11: true
+# !- name: "SCORED | 6.1.12 | PATCH | Ensure no ungrouped files or directories exist"
+cis_6_1_12: true
+# !- name: "NOTSCORED | 6.1.13 | PATCH | Audit SUID executables"
+cis_6_1_13: true
+# !- name: "NOTSCORED | 6.1.14 | PATCH | Audit SGID executables"
+cis_6_1_14: true
+# **- name: "SCORED | 6.2.1 | PATCH | Ensure password fields are not empty"
+cis_6_2_1: true
+# **- name: "SCORED | 6.2.2 | PATCH | Ensure no legacy '+' entries exist in /etc/passwd"
+cis_6_2_2: true
+# **- name: "SCORED | 6.2.3 | PATCH | Ensure no legacy '+' entries exist in /etc/shadow"
+cis_6_2_3: true
+# **- name: "SCORED | 6.2.4 | PATCH | Ensure no legacy '+' entries exist in /etc/group"
+cis_6_2_4: true
+# **- name: "SCORED | 6.2.5 | PATCH | Ensure root is the only UID 0 account"
+cis_6_2_5: true
+# !- name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity"
+cis_6_2_6: true
+# !- name: "SCORED | 6.2.7 | PATCH | Ensure all users' home directories exist"
+cis_6_2_7: true
+# !- name: "SCORED | 6.2.8 | PATCH | Ensure users' home directories permissions are 750 or more restrictive"
+cis_6_2_8: true
+# !- name: "SCORED | 6.2.9 | PATCH | Ensure users own their home directories"
+cis_6_2_9: true
+# !- name: "SCORED | 6.2.10 | PATCH | Ensure users' dot files are not group or world writable"
+cis_6_2_10: true
+# **- name: "SCORED | 6.2.11 | PATCH | Ensure no users have .forward files"
+cis_6_2_11: true
+# **- name: "SCORED | 6.2.12 | PATCH | Ensure no users have .netrc files"
+cis_6_2_12: true
+# # - name: "SCORED | 6.2.13 | PATCH | Ensure users' .netrc Files are not group or world accessible"
+cis_6_2_13: true
+# **- name: "SCORED | 6.2.14 | PATCH | Ensure no users have .rhosts files"
+cis_6_2_14: true
+# !- name: "SCORED | 6.2.15 | PATCH | Ensure all groups in /etc/passwd exist in /etc/group"
+cis_6_2_15: true
+# !- name: "SCORED | 6.2.16 | PATCH | Ensure no duplicate UIDs exist"
+cis_6_2_16: true
+# !- name: "SCORED | 6.2.17 | PATCH | Ensure no duplicate GIDs exist"
+cis_6_2_17: true
+# !- name: "SCORED | 6.2.18 | PATCH | Ensure no duplicate user names exist"
+cis_6_2_18: true
+# !- name: "SCORED | 6.2.19 | PATCH | Ensure no duplicate group names exist"
+cis_6_2_19: true

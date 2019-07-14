@@ -1,0 +1,56 @@
+#!/bin/env ansible-playbook ---
+
+- name: collect errors from the running applications.
+  hosts: all
+  strategy: free
+  gather_facts: true
+  become: yes
+  become_user: root
+
+
+  vars_files:
+    - "{{ playbook_dir}}/../vars/main.yml"
+
+  tasks:
+
+   - name: collect errors task..
+     include: "{{ playbook_dir}}/_collect_errors_include.yml"
+     with_items: "{{ tomcatinst }}"
+     loop_control:
+       loop_var: tc_instance
+     vars:
+       appid:       '{{ tc_instance.APPID }}'
+       appidfull:   '{{ tc_instance.APPIDFULL }}'
+       appshort:    '{{ tc_instance.APPSHORT }}'
+       clonenr:     '{{ tc_instance.CLONENR }}'
+       jvmroute:    '{{ tc_instance.JVMROUTE }}'
+       port:        '{{ tc_instance.PORT }}'
+       context:     '{{ tc_instance.CONTEXT }}'
+
+
+
+   - name: remove filename.out on remote hosts after copying the error file from the target host.
+     shell: "rm /tmp/*_filename.out"
+     args:
+       warn: False
+     become: yes
+     become_method: sudo
+     ignore_errors: yes
+
+
+  post_tasks:
+    - name: Generating a cosolidated report...
+      shell: "cat */*/*{{ item }}_filename.out > report_{{ item }}_$(date -I).html"
+      args:
+        chdir: /data/var/hp/hphelauh/error_log_from_apps/
+      with_items:
+        - OBD
+        - MGMT
+        - ECALL
+        - FNS
+        - DISP
+
+      delegate_to: localhost
+      become: yes
+      become_user: hphelauh
+      ignore_errors: yes

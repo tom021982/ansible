@@ -1,0 +1,30 @@
+## -- Install CA APM Infra Agent
+########################################
+
+- name: Copy AUDI_Standard_Infrastructure_Agent_TuI_v6.tar.gz file to server
+  copy:
+     src: "{{ playbook_dir }}/../roles/ca-apm/files/AUDI_Standard_Infrastructure_Agent_TuI_v6.tar.gz"
+     dest: "/tmp/AUDI_Standard_Infrastructure_Agent_TuI_v6.tar.gz"
+  when: not ansible_check_mode
+  tags:
+    - caapm
+    - machineagent
+
+- name: for infra agent include machineagent_infra.yml
+  include: "{{playbook_dir}}/../roles/ca-apm/tasks/machineagent_infra.yml"
+
+#### need to check the below codes ####
+
+#  with_items: "{{ tomcatinst | selectattr('APPIDFULL', 'search' , ONLY|default('.')  ) | list}}"
+#  loop_control:
+#    loop_var: tc_instance
+#  vars:
+#    appid:       '{{ tc_instance.APPID }}'
+#    appidfull:   '{{ tc_instance.APPIDFULL }}'
+#    appshort:    '{{ tc_instance.APPSHORT }}'
+#    clonenr:     '{{ tc_instance.CLONENR }}'
+#    jvmroute:    '{{ tc_instance.JVMROUTE }}'
+#    port:        '{{ tc_instance.PORT }}'
+#    context:     '{{ tc_instance.CONTEXT }}'
+#    vor_kunde:   '{{ tc_instance.VOR_KUNDE }}'
+

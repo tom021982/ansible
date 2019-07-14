@@ -1,0 +1,28 @@
+## -- Install CA APM Java Agent
+#
+#
+
+- name: Copy AUDI_Standard_Tomcat_Agent_v1.tar file to server
+  copy:
+     src: "{{ playbook_dir }}/../roles/ca-apm/files/AUDI_Standard_Tomcat_Agent_v1.tar"
+     dest: "/tmp/AUDI_Standard_Tomcat_Agent_v1.tar"
+  when: not ansible_check_mode
+  tags:
+    - caapm
+    - javaagent
+
+- name: for each Tomcat include javaagent_instance.yml
+  include: "{{playbook_dir}}/../roles/ca-apm/tasks/javaagent_instance.yml"
+  with_items: "{{ tomcatinst | selectattr('APPIDFULL', 'search' , ONLY|default('.')  ) | list}}"
+  loop_control:
+    loop_var: tc_instance
+  vars:
+    appid:       '{{ tc_instance.APPID }}'
+    appidfull:   '{{ tc_instance.APPIDFULL }}'
+    appshort:    '{{ tc_instance.APPSHORT }}'
+    clonenr:     '{{ tc_instance.CLONENR }}'
+    jvmroute:    '{{ tc_instance.JVMROUTE }}'
+    port:        '{{ tc_instance.PORT }}'
+    context:     '{{ tc_instance.CONTEXT }}'
+    vor_kunde:   '{{ tc_instance.VOR_KUNDE }}'
+

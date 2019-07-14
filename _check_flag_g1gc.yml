@@ -1,0 +1,45 @@
+#!/bin/env ansible-playbook ---
+##
+##
+## for STAGE in tui4 tui5 tuidemo pre approval live; do ansible-playbook -i inventory/PROD/$STAGE/ playbooks/_check_if_l34_is_deployed.yml|grep '"msg":'| tee ~/data/L34_${STAGE}.csv;done;
+##
+##
+
+- name: loop over all instances playbook
+  hosts: all
+  strategy: free
+  gather_facts: true
+  become: yes
+  become_user: root
+
+  vars:
+    - tc8_tc_setenv_script: "/var/apphome/{{appid}}_{{appshort}}/{{tomcat_instance}}/tomcat8_{{tomcat_instance}}_env.sh"
+    - tc85_tc_setenv_script: "/var/apphome/{{appid}}_{{appshort}}/{{tomcat_instance}}/tomcat8.5_{{tomcat_instance}}_env.sh"
+
+
+  vars_files:
+    - "{{ playbook_dir}}/../vars/main.yml"
+    - "{{ playbook_dir}}/../vars/transcribe_lower_to_upper.yml"
+
+  tasks:
+
+   - name: print CSV Header
+     debug:
+       msg: "Hostname;AppID;G1GC_process;G1GC_tc80 env;G1GC_tc85 env"
+     run_once: true
+
+   - name: check flag g1gc on all the tomcat instances
+     include: "{{ playbook_dir}}/./_check_flag_g1gc_include.yml"
+     with_items: "{{ tomcatinst }}"
+     loop_control:
+       loop_var: tc_instance
+     vars:
+       appid:       '{{ tc_instance.APPID }}'
+       appidfull:   '{{ tc_instance.APPIDFULL }}'
+       appshort:    '{{ tc_instance.APPSHORT }}'
+       clonenr:     '{{ tc_instance.CLONENR }}'
+       jvmroute:    '{{ tc_instance.JVMROUTE }}'
+       port:        '{{ tc_instance.PORT }}'
+       context:     '{{ tc_instance.CONTEXT }}'
+       vor_kunde:   '{{ tc_instance.VOR_KUNDE }}'
+
